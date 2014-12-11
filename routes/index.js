@@ -6,6 +6,7 @@ var Scraper = require('../lib/scraper');
 var sendResultResponse = function (result, res) {
 	if (!_.isUndefined(res.sentResultResponse))
 		return;
+	
 	res.header("Access-Control-Allow-Origin", "*");
   	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	res.sentResultResponse = true;
