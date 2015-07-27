@@ -10,9 +10,7 @@ var sendResultResponse = function (result, res) {
 	res.header("Access-Control-Allow-Origin", "*");
   	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	res.sentResultResponse = true;
-	res.json({
-		result: result
-	});
+	res.json(result);
 };
 
 /* GET home page. */
@@ -20,7 +18,12 @@ router.get('/', function(req, res) {
 	var scraper = new Scraper();
 
   	scraper.events.once('result', function (result) {
-  		sendResultResponse(result, res);
+  		var status = null;
+
+  		if (_.contains(result, 'in fase di valutazione'))
+  			status = 'evaluation';
+
+  		sendResultResponse({status: status, text: result}, res);
   	});
 
   	setTimeout(function () {
