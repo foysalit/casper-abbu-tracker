@@ -15,20 +15,23 @@ var sendResultResponse = function (result, res) {
 
 /* GET home page. */
 router.get('/', function(req, res) {
-	var scraper = new Scraper();
+	var scraper = new Scraper(),
+    sent = false;
 
-  	scraper.events.once('result', function (result) {
-  		var status = null;
+	scraper.events.once('result', function (result) {
+		var status = null;
 
-  		if (_.contains(result, 'in fase di valutazione'))
-  			status = 'evaluation';
+		if (_.contains(result, 'in fase di valutazione'))
+			status = 'evaluation';
 
-  		sendResultResponse({status: status, text: result}, res);
-  	});
+		sendResultResponse({status: status, text: result}, res);
+    sent = true;
+	});
 
-  	setTimeout(function () {
-  		sendResultResponse('none', res);
-  	}, 1000*20);
+	setTimeout(function () {
+    if (!sent)
+  		sendResultResponse({status: 'none', text: null}, res);
+	}, 1000*20);
 });
 
 module.exports = router;
