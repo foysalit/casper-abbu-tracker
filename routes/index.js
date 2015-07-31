@@ -15,7 +15,7 @@ var sendResultResponse = function (result, res) {
 
 /* GET home page. */
 router.get('/', function(req, res) {
-	var scraper = new Scraper(),
+	var scraper = new Scraper(req.query),
     sent = false;
 
 	scraper.events.once('result', function (result) {
@@ -25,7 +25,7 @@ router.get('/', function(req, res) {
 			status = 'evaluation';
 
 		sendResultResponse({status: status, text: result}, res);
-    sent = true;
+    	sent = true;
 	});
 
 	setTimeout(function () {
