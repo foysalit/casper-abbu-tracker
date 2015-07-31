@@ -23,6 +23,8 @@ router.get('/', function(req, res) {
 
 		if (_.contains(result, 'in fase di valutazione'))
 			status = 'evaluation';
+		if (_.contains(result, 'stata avviata'))
+			status = 'initialized';
 
 		sendResultResponse({status: status, text: result}, res);
     	sent = true;
