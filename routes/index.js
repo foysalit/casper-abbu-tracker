@@ -21,10 +21,15 @@ router.get('/', function(req, res) {
 	scraper.events.once('result', function (result) {
 		var status = null;
 
-		if (_.contains(result, 'in fase di valutazione'))
-			status = 'evaluation';
-		if (_.contains(result, 'stata avviata'))
+		if (_.contains(result, 'in fase di valutazione finale')) {
+			status = 'evaluation_finished';
+		} else if (_.contains(result, 'in fase di valutazione')) {
+			status = 'evaluation_running';
+		} else if (_.contains(result, 'stata avviata')) {
 			status = 'initialized';
+		} else {
+			status = 'unknown';
+		}
 
 		sendResultResponse({status: status, text: result}, res);
     	sent = true;
